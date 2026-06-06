@@ -2,19 +2,25 @@
 
 An interactive math tools web app for students, inspired by [Big Ideas Math](https://www.bigideasmath.com). Built with React, Vite, TypeScript, and Tailwind CSS.
 
-![Math Tools Dashboard](screenshots/ss-home.png)
+| Light | Dark |
+|---|---|
+| ![Math Tools Dashboard](screenshots/ss-home.png) | ![Math Tools Dashboard Dark](screenshots/ss-home-dark.png) |
 
 ## Tools
 
 ### Algebra Tiles
 Drag positive and negative unit, x, and x² tiles onto a board to model algebraic expressions and equations. Toggle equation mode to work with two sides, and remove zero pairs with one click.
 
-![Algebra Tiles](screenshots/ss-algebra.png)
+| Light | Dark |
+|---|---|
+| ![Algebra Tiles](screenshots/ss-algebra.png) | ![Algebra Tiles Dark](screenshots/ss-algebra-dark.png) |
 
 ### Balance Scale
 Add weights to either side of a scale and watch it tilt in real time. Supports numeric weights (1, 2, 5, 10) and an unknown x — when balanced, it solves for x automatically.
 
-![Balance Scale](screenshots/ss-balance.png)
+| Light | Dark |
+|---|---|
+| ![Balance Scale](screenshots/ss-balance.png) | ![Balance Scale Dark](screenshots/ss-balance-dark.png) |
 
 ### Desmos Graphing Calculator
 Full Desmos graphing calculator embedded directly — graph equations, explore functions, and adjust settings interactively.
@@ -29,27 +35,37 @@ Full Desmos geometry tool embedded — draw points, lines, circles, polygons, an
 ### Fraction Models
 Visualize fractions as SVG pie circles or bar models. Adjust numerator and denominator with steppers, switch between views, and enable compare mode to see two fractions side by side with a `<`, `=`, or `>` result.
 
-![Fraction Models](screenshots/ss-fractions.png)
+| Light | Dark |
+|---|---|
+| ![Fraction Models](screenshots/ss-fractions.png) | ![Fraction Models Dark](screenshots/ss-fractions-dark.png) |
 
 ### Number Line
 An interactive SVG number line with draggable markers. Add multiple markers, zoom in and out, and see each marker's value update live as you drag.
 
-![Number Line](screenshots/ss-numberline.png)
+| Light | Dark |
+|---|---|
+| ![Number Line](screenshots/ss-numberline.png) | ![Number Line Dark](screenshots/ss-numberline-dark.png) |
 
 ### Place Value
 Enter any number up to 999,999 and decompose it into color-coded block stacks for each place (ones through hundred-thousands). Adjust individual columns with + / − buttons.
 
-![Place Value](screenshots/ss-placevalue.png)
+| Light | Dark |
+|---|---|
+| ![Place Value](screenshots/ss-placevalue.png) | ![Place Value Dark](screenshots/ss-placevalue-dark.png) |
 
 ### Probability Tools
 Simulate coin flips, dice rolls, and a configurable spinner. Run single trials or batch runs (×10, ×50, ×100). Results display in a live frequency bar chart with percentages.
 
-![Probability Tools](screenshots/ss-probability.png)
+| Light | Dark |
+|---|---|
+| ![Probability Tools](screenshots/ss-probability.png) | ![Probability Tools Dark](screenshots/ss-probability-dark.png) |
 
 ### Scientific Calculator
 Full scientific calculator with trig (sin, cos, tan), logarithms (log, ln), exponents, square roots, factorials, π, e, and memory (M+, MR, MC). Toggle between DEG and RAD mode.
 
-![Scientific Calculator](screenshots/ss-calculator.png)
+| Light | Dark |
+|---|---|
+| ![Scientific Calculator](screenshots/ss-calculator.png) | ![Scientific Calculator Dark](screenshots/ss-calculator-dark.png) |
 
 ## Tech Stack
 
