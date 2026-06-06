@@ -55,10 +55,10 @@ export default function NumberLine() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-red-50">
+    <div className="flex flex-col h-screen bg-red-50 dark:bg-gray-900">
       <ToolHeader title="Number Line" />
       <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6">
-        <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-3xl">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 w-full max-w-3xl">
           <svg ref={svgRef} width="100%" viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             onPointerMove={onPointerMove} onPointerUp={onPointerUp} className="overflow-visible">
             {/* Line */}
@@ -99,7 +99,7 @@ export default function NumberLine() {
 
         <div className="flex gap-3 flex-wrap justify-center">
           {markers.map(m => (
-            <div key={m.id} className="flex items-center gap-2 bg-white rounded-lg px-3 py-1.5 shadow text-sm">
+            <div key={m.id} className="flex items-center gap-2 bg-white dark:bg-gray-800 rounded-lg px-3 py-1.5 shadow text-sm">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: m.color }} />
               <span className="font-mono font-bold" style={{ color: m.color }}>{m.value}</span>
               <button onClick={() => setMarkers(ms => ms.filter(x => x.id !== m.id))} className="text-slate-400 hover:text-red-500 text-xs ml-1">✕</button>

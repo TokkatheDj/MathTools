@@ -93,14 +93,14 @@ export default function ProbabilityTools() {
   }))
 
   return (
-    <div className="flex flex-col h-screen bg-pink-50">
+    <div className="flex flex-col h-screen bg-pink-50 dark:bg-gray-900">
       <ToolHeader title="Probability Tools" />
       <div className="flex-1 flex flex-col p-4 gap-4 overflow-auto">
         {/* Mode selector */}
         <div className="flex gap-2 justify-center">
           {(['coin', 'dice', 'spinner'] as Mode[]).map(m => (
             <button key={m} onClick={() => { setMode(m); clearResults() }}
-              className={`px-5 py-2 rounded-xl text-sm font-semibold capitalize transition-colors ${mode === m ? 'bg-navy text-white shadow' : 'bg-white text-slate-600 hover:bg-slate-50 shadow-sm'}`}>
+              className={`px-5 py-2 rounded-xl text-sm font-semibold capitalize transition-colors ${mode === m ? 'bg-navy text-white shadow' : 'bg-white dark:bg-gray-700 text-slate-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-600 shadow-sm'}`}>
               {m === 'coin' ? '🪙 Coin' : m === 'dice' ? '🎲 Dice' : '🎡 Spinner'}
             </button>
           ))}
@@ -108,17 +108,17 @@ export default function ProbabilityTools() {
 
         <div className="flex flex-col lg:flex-row gap-4 flex-1 min-h-0">
           {/* Tool panel */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center gap-5 lg:w-80 flex-shrink-0">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col items-center gap-5 lg:w-80 flex-shrink-0">
             {mode === 'coin' && (
               <>
                 <div className={`w-28 h-28 rounded-full flex items-center justify-center text-4xl font-bold text-white shadow-lg ${animating ? 'coin-flipping' : ''}`}
                   style={{ backgroundColor: COIN_COLORS[display as 'H' | 'T'] }}>
                   {display}
                 </div>
-                <div className="text-sm text-slate-500">{display === 'H' ? 'Heads' : 'Tails'}</div>
+                <div className="text-sm text-slate-500 dark:text-gray-400">{display === 'H' ? 'Heads' : 'Tails'}</div>
                 <button onClick={flipCoin} disabled={animating} className="bg-amber-500 text-white px-8 py-3 rounded-xl font-semibold hover:bg-amber-600 disabled:opacity-50 transition-colors">Flip Coin</button>
                 <div className="flex gap-2">
-                  {[10, 50, 100].map(n => <button key={n} onClick={() => flipMany(n)} className="bg-amber-100 text-amber-700 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-amber-200">×{n}</button>)}
+                  {[10, 50, 100].map(n => <button key={n} onClick={() => flipMany(n)} className="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-amber-200 dark:hover:bg-amber-900/60">×{n}</button>)}
                 </div>
               </>
             )}
@@ -130,10 +130,10 @@ export default function ProbabilityTools() {
                     <circle key={i} cx={x} cy={y} r="8" fill="white" />
                   ))}
                 </svg>
-                <div className="text-sm text-slate-500">Rolled: {display}</div>
+                <div className="text-sm text-slate-500 dark:text-gray-400">Rolled: {display}</div>
                 <button onClick={rollDice} disabled={animating} className="bg-navy text-white px-8 py-3 rounded-xl font-semibold hover:bg-navy-light disabled:opacity-50">Roll Dice</button>
                 <div className="flex gap-2">
-                  {[10, 50, 100].map(n => <button key={n} onClick={() => rollMany(n)} className="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-slate-200">×{n}</button>)}
+                  {[10, 50, 100].map(n => <button key={n} onClick={() => rollMany(n)} className="bg-slate-100 dark:bg-gray-700 text-slate-700 dark:text-gray-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-slate-200 dark:hover:bg-gray-600">×{n}</button>)}
                 </div>
               </>
             )}
@@ -159,17 +159,17 @@ export default function ProbabilityTools() {
                   </svg>
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1 w-0 h-0" style={{ borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '20px solid #1a2e4a' }} />
                 </div>
-                <div className="text-sm text-slate-500">Result: <strong>{display}</strong></div>
+                <div className="text-sm text-slate-500 dark:text-gray-400">Result: <strong>{display}</strong></div>
                 <button onClick={spinSpinner} disabled={spinning} className="bg-pink-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-pink-700 disabled:opacity-50">Spin!</button>
               </>
             )}
-            <div className="text-slate-400 text-xs">Total trials: {results.length}</div>
+            <div className="text-slate-400 dark:text-gray-500 text-xs">Total trials: {results.length}</div>
             <button onClick={clearResults} className="text-red-400 hover:text-red-600 text-xs underline">Clear Results</button>
           </div>
 
           {/* Chart */}
-          <div className="flex-1 bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-3 min-h-0">
-            <h3 className="font-semibold text-navy text-sm">Frequency Results</h3>
+          <div className="flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col gap-3 min-h-0">
+            <h3 className="font-semibold text-navy dark:text-white text-sm">Frequency Results</h3>
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={chartData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
@@ -182,11 +182,11 @@ export default function ProbabilityTools() {
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-slate-300 text-sm">Run some trials to see results</div>
+              <div className="flex-1 flex items-center justify-center text-slate-300 dark:text-gray-600 text-sm">Run some trials to see results</div>
             )}
             <div className="flex flex-wrap gap-2 mt-2">
               {chartData.map((d, i) => (
-                <div key={d.name} className="flex items-center gap-1.5 text-xs bg-slate-50 rounded-lg px-3 py-1.5">
+                <div key={d.name} className="flex items-center gap-1.5 text-xs bg-slate-50 dark:bg-gray-700 rounded-lg px-3 py-1.5">
                   <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: SPINNER_COLORS[i % SPINNER_COLORS.length] }} />
                   <span className="font-medium">{d.name}:</span> {d.count} ({d.pct}%)
                 </div>

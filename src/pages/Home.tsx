@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import DarkModeToggle from '../components/common/DarkModeToggle'
 
 const tools = [
   {
@@ -146,19 +147,22 @@ const tools = [
 export default function Home() {
   const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-[#f0f4f8]">
+    <div className="min-h-screen bg-[#f0f4f8] dark:bg-gray-900">
       <div className="bg-navy text-white py-8 px-6 shadow-lg">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center gap-3 mb-1">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-              <rect x="2" y="2" width="14" height="14" rx="3" fill="white" opacity="0.9"/>
-              <rect x="20" y="2" width="14" height="14" rx="3" fill="white" opacity="0.6"/>
-              <rect x="2" y="20" width="14" height="14" rx="3" fill="white" opacity="0.6"/>
-              <rect x="20" y="20" width="14" height="14" rx="3" fill="white" opacity="0.3"/>
-            </svg>
-            <h1 className="text-3xl font-bold tracking-tight">Math Tools</h1>
+        <div className="max-w-5xl mx-auto flex items-start justify-between">
+          <div>
+            <div className="flex items-center gap-3 mb-1">
+              <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+                <rect x="2" y="2" width="14" height="14" rx="3" fill="white" opacity="0.9"/>
+                <rect x="20" y="2" width="14" height="14" rx="3" fill="white" opacity="0.6"/>
+                <rect x="2" y="20" width="14" height="14" rx="3" fill="white" opacity="0.6"/>
+                <rect x="20" y="20" width="14" height="14" rx="3" fill="white" opacity="0.3"/>
+              </svg>
+              <h1 className="text-3xl font-bold tracking-tight">Math Tools</h1>
+            </div>
+            <p className="text-blue-200 text-sm ml-12">Interactive tools for exploring mathematics</p>
           </div>
-          <p className="text-blue-200 text-sm ml-12">Interactive tools for exploring mathematics</p>
+          <DarkModeToggle />
         </div>
       </div>
 
@@ -168,7 +172,7 @@ export default function Home() {
             <button
               key={tool.id}
               onClick={() => navigate(`/${tool.id}`)}
-              className="bg-white rounded-xl p-5 text-left shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-transparent hover:border-blue-100 group"
+              className="bg-white dark:bg-gray-800 rounded-xl p-5 text-left shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 border border-transparent hover:border-blue-100 dark:hover:border-blue-800 group"
             >
               <div
                 className="w-14 h-14 rounded-xl flex items-center justify-center mb-3"
@@ -176,8 +180,8 @@ export default function Home() {
               >
                 {tool.icon}
               </div>
-              <h2 className="text-navy font-semibold text-base mb-1">{tool.title}</h2>
-              <p className="text-slate-500 text-sm leading-snug">{tool.description}</p>
+              <h2 className="text-navy dark:text-white font-semibold text-base mb-1">{tool.title}</h2>
+              <p className="text-slate-500 dark:text-gray-400 text-sm leading-snug">{tool.description}</p>
             </button>
           ))}
         </div>

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import DarkModeToggle from './DarkModeToggle'
 
 interface Props {
   title: string
@@ -18,7 +19,8 @@ export default function ToolHeader({ title }: Props) {
         Math Tools
       </button>
       <span className="text-blue-300 select-none">/</span>
-      <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
+      <h1 className="text-lg font-semibold tracking-tight flex-1">{title}</h1>
+      <DarkModeToggle />
     </div>
   )
 }

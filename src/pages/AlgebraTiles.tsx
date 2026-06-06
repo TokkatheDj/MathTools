@@ -47,8 +47,8 @@ function PaletteTile({ id, type, sign }: { id: string; type: TileType; sign: Til
 function DropZone({ id, label, tiles }: { id: Zone; label: string; tiles: PlacedTile[] }) {
   const { isOver, setNodeRef } = useDroppable({ id })
   return (
-    <div ref={setNodeRef} className={`flex-1 rounded-xl border-2 border-dashed p-3 min-h-[180px] transition-colors ${isOver ? 'border-blue-400 bg-blue-50' : 'border-slate-200 bg-slate-50'}`}>
-      <div className="text-xs text-slate-400 font-semibold mb-2 uppercase tracking-wide">{label}</div>
+    <div ref={setNodeRef} className={`flex-1 rounded-xl border-2 border-dashed p-3 min-h-[180px] transition-colors ${isOver ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'border-slate-200 dark:border-gray-600 bg-slate-50 dark:bg-gray-700'}`}>
+      <div className="text-xs text-slate-400 dark:text-gray-400 font-semibold mb-2 uppercase tracking-wide">{label}</div>
       <div className="flex flex-wrap gap-2">
         {tiles.map(t => <DraggableTile key={t.id} id={t.id} type={t.type} sign={t.sign} />)}
       </div>
@@ -59,7 +59,7 @@ function DropZone({ id, label, tiles }: { id: Zone; label: string; tiles: Placed
 function Trash() {
   const { isOver, setNodeRef } = useDroppable({ id: 'trash' })
   return (
-    <div ref={setNodeRef} className={`flex items-center justify-center w-16 h-16 rounded-xl border-2 border-dashed transition-colors text-xl ${isOver ? 'border-red-400 bg-red-50' : 'border-slate-200 text-slate-300'}`}>
+    <div ref={setNodeRef} className={`flex items-center justify-center w-16 h-16 rounded-xl border-2 border-dashed transition-colors text-xl ${isOver ? 'border-red-400 bg-red-50 dark:bg-red-900/30' : 'border-slate-200 dark:border-gray-600 text-slate-300 dark:text-gray-600'}`}>
       🗑️
     </div>
   )
@@ -138,13 +138,13 @@ export default function AlgebraTiles() {
   const rightExpr = buildExpr(tiles, 'right')
 
   return (
-    <div className="flex flex-col h-screen bg-violet-50">
+    <div className="flex flex-col h-screen bg-violet-50 dark:bg-gray-900">
       <ToolHeader title="Algebra Tiles" />
       <DndContext sensors={sensors} onDragEnd={onDragEnd}>
         <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 overflow-auto">
           {/* Palette */}
-          <div className="bg-white rounded-2xl shadow p-4 lg:w-48 flex-shrink-0">
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">Tiles</div>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow p-4 lg:w-48 flex-shrink-0">
+            <div className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-3">Tiles</div>
             <div className="flex flex-wrap lg:flex-col gap-3">
               {([['unit', 1], ['unit', -1], ['x', 1], ['x', -1], ['x2', 1], ['x2', -1]] as [TileType, TileSign][]).map(([type, sign]) => (
                 <div key={`${type}-${sign}`} className="flex items-center gap-2">
@@ -153,20 +153,20 @@ export default function AlgebraTiles() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 pt-4 border-t border-slate-100">
+            <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-700">
               <Trash />
-              <div className="text-xs text-slate-400 mt-1">Drag here to remove</div>
+              <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">Drag here to remove</div>
             </div>
           </div>
 
           {/* Board */}
           <div className="flex-1 flex flex-col gap-4">
             <div className="flex gap-3 flex-wrap">
-              <button onClick={() => setEquationMode(m => !m)} className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${equationMode ? 'bg-purple-600 text-white' : 'bg-white text-slate-600 shadow-sm hover:bg-slate-50'}`}>
+              <button onClick={() => setEquationMode(m => !m)} className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${equationMode ? 'bg-purple-600 text-white' : 'bg-white dark:bg-gray-700 text-slate-600 dark:text-gray-300 shadow-sm hover:bg-slate-50 dark:hover:bg-gray-600'}`}>
                 {equationMode ? 'Equation Mode ✓' : 'Equation Mode'}
               </button>
-              <button onClick={removeZeroPairs} className="bg-white text-slate-600 px-4 py-1.5 rounded-lg text-sm font-medium shadow-sm hover:bg-slate-50">Remove Zero Pairs</button>
-              <button onClick={() => setTiles([])} className="bg-red-50 text-red-500 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100">Clear</button>
+              <button onClick={removeZeroPairs} className="bg-white dark:bg-gray-700 text-slate-600 dark:text-gray-300 px-4 py-1.5 rounded-lg text-sm font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-gray-600">Remove Zero Pairs</button>
+              <button onClick={() => setTiles([])} className="bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
             </div>
 
             <div className="flex gap-3 flex-1 min-h-0">
@@ -180,8 +180,8 @@ export default function AlgebraTiles() {
             </div>
 
             {/* Expression display */}
-            <div className="bg-white rounded-xl shadow px-5 py-3 text-center">
-              <span className="text-navy text-xl font-semibold font-mono">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow px-5 py-3 text-center">
+              <span className="text-navy dark:text-white text-xl font-semibold font-mono">
                 {equationMode ? `${leftExpr} = ${rightExpr}` : leftExpr}
               </span>
             </div>

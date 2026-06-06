@@ -14,11 +14,11 @@ const KEYS = [
 
 const keyStyle = (k: string) => {
   if (k === '=') return 'bg-blue-600 text-white hover:bg-blue-700 font-bold'
-  if (['DEL', 'MC', 'MR', 'M+'].includes(k)) return 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+  if (['DEL', 'MC', 'MR', 'M+'].includes(k)) return 'bg-slate-200 dark:bg-gray-600 text-slate-700 dark:text-gray-200 hover:bg-slate-300 dark:hover:bg-gray-500'
   if (['+', '−', '×', '÷', '^', '%'].includes(k)) return 'bg-navy text-white hover:bg-navy-light'
   if (['sin(', 'cos(', 'tan(', 'log(', 'ln(', 'x²', '√(', 'π', 'e', '!', '(', ')'].includes(k))
-    return 'bg-indigo-100 text-indigo-800 hover:bg-indigo-200 text-xs'
-  return 'bg-white text-slate-800 hover:bg-slate-50 shadow-sm'
+    return 'bg-indigo-100 dark:bg-indigo-900/40 text-indigo-800 dark:text-indigo-300 hover:bg-indigo-200 dark:hover:bg-indigo-900/60 text-xs'
+  return 'bg-white dark:bg-gray-700 text-slate-800 dark:text-gray-100 hover:bg-slate-50 dark:hover:bg-gray-600 shadow-sm'
 }
 
 export default function ScientificCalculator() {
@@ -58,10 +58,10 @@ export default function ScientificCalculator() {
   }, [angleMode, memory, lastWasResult])
 
   return (
-    <div className="flex flex-col h-screen bg-slate-100">
+    <div className="flex flex-col h-screen bg-slate-100 dark:bg-gray-900">
       <ToolHeader title="Scientific Calculator" />
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden w-full max-w-sm">
           {/* Display */}
           <div className="bg-navy p-4 min-h-[100px] flex flex-col justify-end">
             <div className="flex justify-between items-center mb-1">
@@ -98,7 +98,7 @@ export default function ScientificCalculator() {
             ))}
             <button
               onClick={() => { setExpression(''); setResult('0'); setLastWasResult(false) }}
-              className="w-full rounded-lg py-3 text-sm font-medium bg-red-50 text-red-600 hover:bg-red-100 transition-colors mt-0.5"
+              className="w-full rounded-lg py-3 text-sm font-medium bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors mt-0.5"
             >
               Clear
             </button>

@@ -59,7 +59,7 @@ export default function BalanceScale() {
   )
 
   return (
-    <div className="flex flex-col h-screen bg-cyan-50">
+    <div className="flex flex-col h-screen bg-cyan-50 dark:bg-gray-900">
       <ToolHeader title="Balance Scale" />
       <div className="flex-1 flex flex-col items-center justify-between p-6 gap-4 overflow-auto">
         {/* Status */}
@@ -104,23 +104,23 @@ export default function BalanceScale() {
 
         {/* Weights on pans */}
         <div className="grid grid-cols-3 gap-4 w-full max-w-2xl">
-          <div className="bg-white rounded-xl shadow p-3">
-            <div className="text-sm font-semibold text-slate-500 mb-2 text-center">Left ({leftSum})</div>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-3">
+            <div className="text-sm font-semibold text-slate-500 dark:text-gray-400 mb-2 text-center">Left ({leftSum})</div>
             <WeightList side="left" weights={left} />
           </div>
           <div className="flex flex-col gap-2 items-center justify-center">
             <select value={selected} onChange={e => setSelected(Number(e.target.value))}
-              className="border border-slate-200 rounded-lg px-3 py-2 text-sm w-full text-center">
+              className="border border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-lg px-3 py-2 text-sm w-full text-center">
               {WEIGHT_OPTIONS.map((o, i) => <option key={i} value={i}>{o.label}</option>)}
             </select>
             <div className="flex gap-2 w-full">
               <button onClick={() => { setAddSide('left'); addWeight() }} className="flex-1 bg-navy text-white rounded-lg py-2 text-xs font-medium hover:bg-navy-light">← Left</button>
               <button onClick={() => { setAddSide('right'); addWeight() }} className="flex-1 bg-navy text-white rounded-lg py-2 text-xs font-medium hover:bg-navy-light">Right →</button>
             </div>
-            <button onClick={() => { setLeft([]); setRight([]) }} className="w-full bg-red-50 text-red-500 rounded-lg py-2 text-xs font-medium hover:bg-red-100">Clear All</button>
+            <button onClick={() => { setLeft([]); setRight([]) }} className="w-full bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 rounded-lg py-2 text-xs font-medium hover:bg-red-100 dark:hover:bg-red-900/50">Clear All</button>
           </div>
-          <div className="bg-white rounded-xl shadow p-3">
-            <div className="text-sm font-semibold text-slate-500 mb-2 text-center">Right ({rightSum})</div>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-3">
+            <div className="text-sm font-semibold text-slate-500 dark:text-gray-400 mb-2 text-center">Right ({rightSum})</div>
             <WeightList side="right" weights={right} />
           </div>
         </div>
