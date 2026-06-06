@@ -11,6 +11,7 @@ import NumberLine from './pages/NumberLine'
 import PlaceValue from './pages/PlaceValue'
 import ProbabilityTools from './pages/ProbabilityTools'
 import ScientificCalculator from './pages/ScientificCalculator'
+import UnitConverter from './pages/UnitConverter'
 
 export default function App() {
   const darkMode = useDarkMode()
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/place-value" element={<PlaceValue />} />
           <Route path="/probability-tools" element={<ProbabilityTools />} />
           <Route path="/scientific-calculator" element={<ScientificCalculator />} />
+          <Route path="/unit-converter" element={<UnitConverter />} />
         </Routes>
       </HashRouter>
     </DarkModeContext.Provider>

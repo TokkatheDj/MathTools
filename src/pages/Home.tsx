@@ -142,6 +142,19 @@ const tools = [
       </svg>
     ),
   },
+  {
+    id: 'unit-converter',
+    title: 'Unit Converter',
+    description: 'Convert between length, weight, temperature, volume, speed and area',
+    color: '#0d9488',
+    bg: '#ccfbf1',
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path d="M4 10h24M22 4l6 6-6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M28 22H4M10 16l-6 6 6 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    ),
+  },
 ]
 
 export default function Home() {
