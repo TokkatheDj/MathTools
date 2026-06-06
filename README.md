@@ -67,6 +67,15 @@ Full scientific calculator with trig (sin, cos, tan), logarithms (log, ln), expo
 |---|---|
 | ![Scientific Calculator](screenshots/ss-calculator.png) | ![Scientific Calculator Dark](screenshots/ss-calculator-dark.png) |
 
+## Dark Mode
+
+Every tool supports a full dark mode. Click the sun/moon icon in the top-right corner of any page to toggle it. Your preference is saved to `localStorage` and automatically applied on return visits. On first load, the app respects your system's `prefers-color-scheme` setting.
+
+| Light | Dark |
+|---|---|
+| ![Home Light](screenshots/ss-home.png) | ![Home Dark](screenshots/ss-home-dark.png) |
+| ![Calculator Light](screenshots/ss-calculator.png) | ![Calculator Dark](screenshots/ss-calculator-dark.png) |
+
 ## Tech Stack
 
 | | |
