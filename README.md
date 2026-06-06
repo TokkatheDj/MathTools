@@ -2,6 +2,8 @@
 
 An interactive math tools web app for students, inspired by [Big Ideas Math](https://www.bigideasmath.com). Built with React, Vite, TypeScript, and Tailwind CSS.
 
+**[Live Demo →](https://tokkathedj.github.io/MathTools/)**
+
 | Light | Dark |
 |---|---|
 | ![Math Tools Dashboard](screenshots/ss-home.png) | ![Math Tools Dashboard Dark](screenshots/ss-home-dark.png) |
