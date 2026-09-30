@@ -98,7 +98,7 @@ export default function ScientificCalculator() {
             ))}
             <button
               onClick={() => { setExpression(''); setResult('0'); setLastWasResult(false) }}
-              className="w-full rounded-lg py-3 text-sm font-medium bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors mt-0.5"
+              className="w-full rounded-lg py-3 text-sm font-medium bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/50 transition-colors mt-0.5"
             >
               Clear
             </button>

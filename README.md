@@ -18,7 +18,7 @@ Drag positive and negative unit, x, and x² tiles onto a board to model algebrai
 | ![Algebra Tiles](screenshots/ss-algebra.png) | ![Algebra Tiles Dark](screenshots/ss-algebra-dark.png) |
 
 ### Balance Scale
-Add weights to either side of a scale and watch it tilt in real time. Supports numeric weights (1, 2, 5, 10) and an unknown x — when balanced, it solves for x automatically.
+Add weights to either side of a scale and watch it tilt in real time. Supports numeric weights (1, 2, 5, 10) and an unknown x. With x on the scale it shows the equation and solves it — x on either side or both, with fractions and negatives (`x + 2 = 5` gives x = 3, `2x = 5` gives x = 5/2), and it says so when every x works or none does.
 
 | Light | Dark |
 |---|---|

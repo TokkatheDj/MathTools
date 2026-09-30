@@ -68,12 +68,12 @@ const UNITS: Record<Category, UnitDef[]> = {
 const CATEGORIES: Category[] = ['Length', 'Weight', 'Temperature', 'Volume', 'Speed', 'Area']
 
 const CATEGORY_COLORS: Record<Category, { text: string; bg: string; tab: string }> = {
-  Length:      { text: 'text-teal-700',   bg: 'bg-teal-600',   tab: 'bg-teal-600 text-white' },
+  Length:      { text: 'text-teal-700',   bg: 'bg-teal-700',   tab: 'bg-teal-700 text-white' },
   Weight:      { text: 'text-violet-700', bg: 'bg-violet-600', tab: 'bg-violet-600 text-white' },
-  Temperature: { text: 'text-orange-700', bg: 'bg-orange-500', tab: 'bg-orange-500 text-white' },
+  Temperature: { text: 'text-orange-700', bg: 'bg-orange-700', tab: 'bg-orange-700 text-white' },
   Volume:      { text: 'text-blue-700',   bg: 'bg-blue-600',   tab: 'bg-blue-600 text-white' },
-  Speed:       { text: 'text-pink-700',   bg: 'bg-pink-600',   tab: 'bg-pink-600 text-white' },
-  Area:        { text: 'text-green-700',  bg: 'bg-green-600',  tab: 'bg-green-600 text-white' },
+  Speed:       { text: 'text-pink-700',   bg: 'bg-pink-700',   tab: 'bg-pink-700 text-white' },
+  Area:        { text: 'text-green-700',  bg: 'bg-green-700',  tab: 'bg-green-700 text-white' },
 }
 
 function fmt(n: number): string {
@@ -178,8 +178,9 @@ export default function UnitConverter() {
 
             {/* From */}
             <div className="flex-1 flex flex-col gap-2">
-              <label className="text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wide">From</label>
+              <label htmlFor="unit-from" className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide">From</label>
               <select
+                id="unit-from"
                 value={fromIdx}
                 onChange={e => handleFromUnit(Number(e.target.value))}
                 className="border border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-teal-400"
@@ -209,8 +210,9 @@ export default function UnitConverter() {
 
             {/* To */}
             <div className="flex-1 flex flex-col gap-2">
-              <label className="text-xs font-semibold text-slate-400 dark:text-gray-500 uppercase tracking-wide">To</label>
+              <label htmlFor="unit-to" className="text-xs font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide">To</label>
               <select
+                id="unit-to"
                 value={toIdx}
                 onChange={e => handleToUnit(Number(e.target.value))}
                 className="border border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-teal-400"
@@ -238,16 +240,16 @@ export default function UnitConverter() {
 
         {/* Reference table */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 w-full max-w-lg">
-          <h3 className="text-sm font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-semibold text-slate-500 dark:text-gray-400 uppercase tracking-wide mb-3">
             {category} — all units from {fromVal || '1'} {units[fromIdx].label}
-          </h3>
+          </h2>
           <div className="grid grid-cols-2 gap-x-6 gap-y-1.5">
             {units.map((u, i) => {
               if (i === fromIdx) return null
               const result = convert(fromVal || '1', fromIdx, i)
               return (
                 <div key={u.label} className="flex justify-between items-baseline border-b border-slate-50 dark:border-gray-700 py-1">
-                  <span className="text-slate-400 dark:text-gray-500 text-xs font-medium">{u.label}</span>
+                  <span className="text-slate-500 dark:text-gray-400 text-xs font-medium">{u.label}</span>
                   <span className="text-slate-800 dark:text-gray-200 text-sm font-mono font-semibold">{result}</span>
                 </div>
               )

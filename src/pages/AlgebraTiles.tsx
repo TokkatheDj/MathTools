@@ -10,17 +10,19 @@ type Zone = 'left' | 'right'
 interface PlacedTile { id: string; type: TileType; sign: TileSign; zone: Zone }
 
 const TILE_CONFIG = {
-  unit: { w: 32, h: 32, label: '1', posColor: '#fbbf24', negColor: '#f87171' },
-  x:    { w: 32, h: 80, label: 'x', posColor: '#60a5fa', negColor: '#f87171' },
-  x2:   { w: 80, h: 80, label: 'x²', posColor: '#34d399', negColor: '#f87171' },
+  unit: { w: 32, h: 32, label: '1', posColor: '#fbbf24', negColor: '#dc2626', posInk: '#1f2937' },
+  x:    { w: 32, h: 80, label: 'x', posColor: '#2563eb', negColor: '#dc2626' },
+  x2:   { w: 80, h: 80, label: 'x²', posColor: '#047857', negColor: '#dc2626' },
 }
 
 function Tile({ type, sign, dragging = false }: { type: TileType; sign: TileSign; dragging?: boolean }) {
   const cfg = TILE_CONFIG[type]
   const color = sign === 1 ? cfg.posColor : cfg.negColor
+  // White on every tile except the yellow unit, where white would be unreadable.
+  const ink = sign === 1 && 'posInk' in cfg ? cfg.posInk : '#ffffff'
   return (
-    <div className="rounded-sm border-2 border-white flex items-center justify-center text-white text-xs font-bold shadow select-none"
-      style={{ width: cfg.w, height: cfg.h, backgroundColor: color, opacity: dragging ? 0.5 : 1, transition: 'opacity 0.15s' }}>
+    <div className="rounded-sm border-2 border-white flex items-center justify-center text-xs font-bold shadow select-none"
+      style={{ width: cfg.w, height: cfg.h, backgroundColor: color, color: ink, opacity: dragging ? 0.5 : 1, transition: 'opacity 0.15s' }}>
       {sign === -1 ? '−' : ''}{cfg.label}
     </div>
   )
@@ -48,7 +50,7 @@ function DropZone({ id, label, tiles }: { id: Zone; label: string; tiles: Placed
   const { isOver, setNodeRef } = useDroppable({ id })
   return (
     <div ref={setNodeRef} className={`flex-1 rounded-xl border-2 border-dashed p-3 min-h-[180px] transition-colors ${isOver ? 'border-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'border-slate-200 dark:border-gray-600 bg-slate-50 dark:bg-gray-700'}`}>
-      <div className="text-xs text-slate-400 dark:text-gray-400 font-semibold mb-2 uppercase tracking-wide">{label}</div>
+      <div className="text-xs text-slate-500 dark:text-gray-300 font-semibold mb-2 uppercase tracking-wide">{label}</div>
       <div className="flex flex-wrap gap-2">
         {tiles.map(t => <DraggableTile key={t.id} id={t.id} type={t.type} sign={t.sign} />)}
       </div>
@@ -149,13 +151,13 @@ export default function AlgebraTiles() {
               {([['unit', 1], ['unit', -1], ['x', 1], ['x', -1], ['x2', 1], ['x2', -1]] as [TileType, TileSign][]).map(([type, sign]) => (
                 <div key={`${type}-${sign}`} className="flex items-center gap-2">
                   <PaletteTile id={`pal-${type}-${sign}`} type={type} sign={sign} />
-                  <span className="text-xs text-slate-400">{sign === 1 ? '+' : '−'}{TILE_CONFIG[type].label}</span>
+                  <span className="text-xs text-slate-500 dark:text-gray-400">{sign === 1 ? '+' : '−'}{TILE_CONFIG[type].label}</span>
                 </div>
               ))}
             </div>
             <div className="mt-4 pt-4 border-t border-slate-100 dark:border-gray-700">
               <Trash />
-              <div className="text-xs text-slate-400 dark:text-gray-500 mt-1">Drag here to remove</div>
+              <div className="text-xs text-slate-500 dark:text-gray-400 mt-1">Drag here to remove</div>
             </div>
           </div>
 
@@ -166,7 +168,7 @@ export default function AlgebraTiles() {
                 {equationMode ? 'Equation Mode ✓' : 'Equation Mode'}
               </button>
               <button onClick={removeZeroPairs} className="bg-white dark:bg-gray-700 text-slate-600 dark:text-gray-300 px-4 py-1.5 rounded-lg text-sm font-medium shadow-sm hover:bg-slate-50 dark:hover:bg-gray-600">Remove Zero Pairs</button>
-              <button onClick={() => setTiles([])} className="bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
+              <button onClick={() => setTiles([])} className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-1.5 rounded-lg text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
             </div>
 
             <div className="flex gap-3 flex-1 min-h-0">

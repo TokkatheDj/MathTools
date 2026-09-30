@@ -58,7 +58,7 @@ export default function PlaceValue() {
                     {col.place >= 1000 ? (col.place / 1000) + 'k' : col.place}
                   </div>
                 ))}
-                {counts[i] === 0 && <div className="text-slate-300 text-3xl select-none">0</div>}
+                {counts[i] === 0 && <div className="text-slate-500 text-3xl select-none">0</div>}
               </div>
               {/* Count display */}
               <div className="text-2xl font-bold font-mono" style={{ color: col.color }}>{counts[i]}</div>
@@ -78,7 +78,7 @@ export default function PlaceValue() {
             onKeyDown={e => e.key === 'Enter' && decompose()}
             className="border border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-500 rounded-xl px-4 py-2 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-navy" />
           <button onClick={decompose} className="bg-navy text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-navy-light transition-colors">Decompose</button>
-          <button onClick={() => { setCounts([0, 0, 0, 0, 0, 0]); setInput('') }} className="bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
+          <button onClick={() => { setCounts([0, 0, 0, 0, 0, 0]); setInput('') }} className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
         </div>
       </div>
     </div>

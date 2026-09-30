@@ -4,7 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 
 
 type Mode = 'coin' | 'dice' | 'spinner'
 
-const COIN_COLORS = { H: '#f59e0b', T: '#64748b' }
+const COIN_COLORS = { H: '#b45309', T: '#64748b' } // bronze-gold heads: white H stays readable
 const DICE_DOTS: Record<number, [number, number][]> = {
   1: [[50, 50]],
   2: [[25, 25], [75, 75]],
@@ -116,7 +116,7 @@ export default function ProbabilityTools() {
                   {display}
                 </div>
                 <div className="text-sm text-slate-500 dark:text-gray-400">{display === 'H' ? 'Heads' : 'Tails'}</div>
-                <button onClick={flipCoin} disabled={animating} className="bg-amber-500 text-white px-8 py-3 rounded-xl font-semibold hover:bg-amber-600 disabled:opacity-50 transition-colors">Flip Coin</button>
+                <button onClick={flipCoin} disabled={animating} className="bg-amber-700 text-white px-8 py-3 rounded-xl font-semibold hover:bg-amber-800 disabled:opacity-50 transition-colors">Flip Coin</button>
                 <div className="flex gap-2">
                   {[10, 50, 100].map(n => <button key={n} onClick={() => flipMany(n)} className="bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-amber-200 dark:hover:bg-amber-900/60">×{n}</button>)}
                 </div>
@@ -163,26 +163,26 @@ export default function ProbabilityTools() {
                 <button onClick={spinSpinner} disabled={spinning} className="bg-pink-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-pink-700 disabled:opacity-50">Spin!</button>
               </>
             )}
-            <div className="text-slate-400 dark:text-gray-500 text-xs">Total trials: {results.length}</div>
-            <button onClick={clearResults} className="text-red-400 hover:text-red-600 text-xs underline">Clear Results</button>
+            <div className="text-slate-500 dark:text-gray-400 text-xs">Total trials: {results.length}</div>
+            <button onClick={clearResults} className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-xs underline">Clear Results</button>
           </div>
 
           {/* Chart */}
           <div className="flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 flex flex-col gap-3 min-h-0">
-            <h3 className="font-semibold text-navy dark:text-white text-sm">Frequency Results</h3>
+            <h2 className="font-semibold text-navy dark:text-white text-sm">Frequency Results</h2>
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={chartData} margin={{ top: 5, right: 10, left: -10, bottom: 5 }}>
                   <XAxis dataKey="name" tick={{ fontSize: 12 }} />
                   <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(v, _name, item: any) => [`${v} (${item?.payload?.pct ?? 0}%)`, 'Count']} />
+                  <Tooltip formatter={(v, _name, item: { payload?: { pct?: number } }) => [`${v} (${item?.payload?.pct ?? 0}%)`, 'Count']} />
                   <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                     {chartData.map((_, i) => <Cell key={i} fill={SPINNER_COLORS[i % SPINNER_COLORS.length]} />)}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             ) : (
-              <div className="flex-1 flex items-center justify-center text-slate-300 dark:text-gray-600 text-sm">Run some trials to see results</div>
+              <div className="flex-1 flex items-center justify-center text-slate-500 dark:text-gray-400 text-sm">Run some trials to see results</div>
             )}
             <div className="flex flex-wrap gap-2 mt-2">
               {chartData.map((d, i) => (

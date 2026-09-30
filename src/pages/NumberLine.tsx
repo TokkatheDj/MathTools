@@ -1,9 +1,10 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
 
 interface Marker { id: number; value: number; color: string }
 
-const COLORS = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6']
+// Deep enough that the white value on each marker stays readable.
+const COLORS = ['#dc2626', '#2563eb', '#047857', '#b45309', '#7c3aed']
 
 export default function NumberLine() {
   const [min, setMin] = useState(-10)
@@ -31,13 +32,13 @@ export default function NumberLine() {
     dragging.current = id
   }
 
-  const onPointerMove = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
+  const onPointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
     if (dragging.current === null || !svgRef.current) return
     const rect = svgRef.current.getBoundingClientRect()
     const x = (e.clientX - rect.left) * (SVG_W / rect.width)
     const val = toVal(x)
     setMarkers(ms => ms.map(m => m.id === dragging.current ? { ...m, value: val } : m))
-  }, [min, max])
+  }
 
   const onPointerUp = () => { dragging.current = null }
 
@@ -62,19 +63,19 @@ export default function NumberLine() {
           <svg ref={svgRef} width="100%" viewBox={`0 0 ${SVG_W} ${SVG_H}`}
             onPointerMove={onPointerMove} onPointerUp={onPointerUp} className="overflow-visible">
             {/* Line */}
-            <line x1={PAD} y1={lineY} x2={SVG_W - PAD} y2={lineY} stroke="#1a2e4a" strokeWidth="3" strokeLinecap="round" />
+            <line x1={PAD} y1={lineY} x2={SVG_W - PAD} y2={lineY} stroke="#1a2e4a" className="dark:stroke-slate-200" strokeWidth="3" strokeLinecap="round" />
             {/* Arrowheads */}
-            <polygon points={`${SVG_W - PAD + 12},${lineY} ${SVG_W - PAD},${lineY - 6} ${SVG_W - PAD},${lineY + 6}`} fill="#1a2e4a" />
-            <polygon points={`${PAD - 12},${lineY} ${PAD},${lineY - 6} ${PAD},${lineY + 6}`} fill="#1a2e4a" />
+            <polygon points={`${SVG_W - PAD + 12},${lineY} ${SVG_W - PAD},${lineY - 6} ${SVG_W - PAD},${lineY + 6}`} fill="#1a2e4a" className="dark:fill-slate-200" />
+            <polygon points={`${PAD - 12},${lineY} ${PAD},${lineY - 6} ${PAD},${lineY + 6}`} fill="#1a2e4a" className="dark:fill-slate-200" />
             {/* Ticks */}
             {ticks.map(v => {
               const x = toX(v)
               const major = v % 5 === 0
               return (
                 <g key={v}>
-                  <line x1={x} y1={lineY - (major ? 10 : 6)} x2={x} y2={lineY + (major ? 10 : 6)} stroke="#475569" strokeWidth={major ? 2 : 1} />
+                  <line x1={x} y1={lineY - (major ? 10 : 6)} x2={x} y2={lineY + (major ? 10 : 6)} stroke="#475569" className="dark:stroke-slate-400" strokeWidth={major ? 2 : 1} />
                   {v % labelEvery === 0 && (
-                    <text x={x} y={lineY + 26} textAnchor="middle" fontSize="12" fill="#475569" fontFamily="system-ui">{v}</text>
+                    <text x={x} y={lineY + 26} textAnchor="middle" fontSize="12" fill="#475569" className="dark:fill-slate-300" fontFamily="system-ui">{v}</text>
                   )}
                 </g>
               )
@@ -94,15 +95,15 @@ export default function NumberLine() {
           <button onClick={() => zoom('in')} className="bg-navy text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-navy-light">Zoom In +</button>
           <button onClick={() => zoom('out')} className="bg-navy text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-navy-light">Zoom Out −</button>
           <button onClick={addMarker} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Add Marker</button>
-          <button onClick={() => setMarkers([])} className="bg-red-100 text-red-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200">Clear Markers</button>
+          <button onClick={() => setMarkers([])} className="bg-red-100 text-red-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-200">Clear Markers</button>
         </div>
 
         <div className="flex gap-3 flex-wrap justify-center">
           {markers.map(m => (
             <div key={m.id} className="flex items-center gap-2 bg-white dark:bg-gray-800 rounded-lg px-3 py-1.5 shadow text-sm">
               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: m.color }} />
-              <span className="font-mono font-bold" style={{ color: m.color }}>{m.value}</span>
-              <button onClick={() => setMarkers(ms => ms.filter(x => x.id !== m.id))} className="text-slate-400 hover:text-red-500 text-xs ml-1">✕</button>
+              <span className="font-mono font-bold text-navy dark:text-white">{m.value}</span>
+              <button onClick={() => setMarkers(ms => ms.filter(x => x.id !== m.id))} aria-label={`Remove marker at ${m.value}`} className="text-slate-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 text-xs ml-1">✕</button>
             </div>
           ))}
         </div>
