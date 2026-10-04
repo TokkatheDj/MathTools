@@ -69,6 +69,13 @@ Full scientific calculator with trig (sin, cos, tan), logarithms (log, ln), expo
 |---|---|
 | ![Scientific Calculator](screenshots/ss-calculator.png) | ![Scientific Calculator Dark](screenshots/ss-calculator-dark.png) |
 
+### Unit Converter
+Convert length, weight, temperature, volume, speed and area — metric and US customary — and see the value in every other unit of that kind at once. Conversion factors are the exact definitions (1 in = 0.0254 m, 1 lb = 453.592 g, 1 US gal = 3.78541 L).
+
+| Light | Dark |
+|---|---|
+| ![Unit Converter](screenshots/ss-units.png) | ![Unit Converter Dark](screenshots/ss-units-dark.png) |
+
 ## Dark Mode
 
 Every tool supports a full dark mode. Click the sun/moon icon in the top-right corner of any page to toggle it. Your preference is saved to `localStorage` and automatically applied on return visits. On first load, the app respects your system's `prefers-color-scheme` setting.
@@ -82,7 +89,7 @@ Every tool supports a full dark mode. Click the sun/moon icon in the top-right c
 
 | | |
 |---|---|
-| Framework | React 19 + Vite 6 |
+| Framework | React 19 + Vite 8 |
 | Language | TypeScript |
 | Styling | Tailwind CSS 3 |
 | Routing | React Router 7 (hash-based) |
@@ -110,6 +117,14 @@ npm run dev
 ```
 
 Open [http://localhost:5174](http://localhost:5174).
+
+### Tests
+
+```bash
+npm test
+```
+
+37 tests: the Balance Scale's solver (x on either side, fractions, negatives, every-x and no-x cases) and the Scientific Calculator's engine (log is base 10, ln, √, and degree-mode trig over a whole expression, e.g. sin(30+60) = 1).
 
 ### Build for production
 
