@@ -4,6 +4,15 @@ import ToolHeader from '../components/common/ToolHeader'
 function FractionCircle({ numerator, denominator, color }: { numerator: number; denominator: number; color: string }) {
   const cx = 80, cy = 80, r = 70
   if (denominator === 0) return null
+  // One whole: a single 360-degree arc starts and ends at the same point, which SVG draws as
+  // NOTHING - so 1/1 showed an empty circle until Oct 2026. Draw the whole circle instead.
+  if (denominator === 1) {
+    return (
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle cx={cx} cy={cy} r={r} fill={numerator >= 1 ? color : '#e2e8f0'} stroke="#94a3b8" strokeWidth="1.5" />
+      </svg>
+    )
+  }
 
   const slices = Array.from({ length: denominator }, (_, i) => {
     const startAngle = (i / denominator) * 2 * Math.PI - Math.PI / 2
