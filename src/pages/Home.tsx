@@ -78,6 +78,21 @@ const tools = [
     ),
   },
   {
+    id: 'slope-lines',
+    title: 'Slope & Lines',
+    description: "Drag two points to see rise over run, the slope and the line's equation, then take a challenge",
+    color: '#0369a1',
+    bg: '#e0f2fe',
+    icon: (
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <path d="M4 26 L28 6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/>
+        <path d="M8 23 H20 V13" stroke="currentColor" strokeWidth="2" strokeDasharray="3 2" opacity="0.7"/>
+        <circle cx="8" cy="23" r="3" fill="currentColor"/>
+        <circle cx="20" cy="13" r="3" fill="currentColor"/>
+      </svg>
+    ),
+  },
+  {
     id: 'number-line',
     title: 'Number Line',
     description: 'Place and explore numbers on an interactive number line',

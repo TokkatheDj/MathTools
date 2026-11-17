@@ -12,6 +12,7 @@ const DesmosGeometry = lazy(() => import('./pages/DesmosGeometry'))
 const DesmosGraphing = lazy(() => import('./pages/DesmosGraphing'))
 const FractionModels = lazy(() => import('./pages/FractionModels'))
 const NumberLine = lazy(() => import('./pages/NumberLine'))
+const SlopeLines = lazy(() => import('./pages/SlopeLines'))
 const PlaceValue = lazy(() => import('./pages/PlaceValue'))
 const ProbabilityTools = lazy(() => import('./pages/ProbabilityTools'))
 const ScientificCalculator = lazy(() => import('./pages/ScientificCalculator'))
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/desmos-graphing" element={<DesmosGraphing />} />
           <Route path="/fraction-models" element={<FractionModels />} />
           <Route path="/number-line" element={<NumberLine />} />
+          <Route path="/slope-lines" element={<SlopeLines />} />
           <Route path="/place-value" element={<PlaceValue />} />
           <Route path="/probability-tools" element={<ProbabilityTools />} />
           <Route path="/scientific-calculator" element={<ScientificCalculator />} />

@@ -41,6 +41,13 @@ Visualize fractions as SVG pie circles or bar models. Adjust numerator and denom
 |---|---|
 | ![Fraction Models](screenshots/ss-fractions.png) | ![Fraction Models Dark](screenshots/ss-fractions-dark.png) |
 
+### Slope & Lines
+Drag two points on a coordinate grid (or move them with the arrow keys) and watch the rise and run, the slope as a reduced fraction, and the line's equation in slope-intercept and point-slope form update live. Vertical lines show an undefined slope. A challenge mode asks for a line with a given slope through a given point and checks the answer. The maths lives in `slope-math.ts` with 17 tests.
+
+| Light | Dark |
+|---|---|
+| ![Slope & Lines](screenshots/ss-slope.png) | ![Slope & Lines Dark](screenshots/ss-slope-dark.png) |
+
 ### Number Line
 An interactive SVG number line with draggable markers. Add multiple markers, zoom in and out, and see each marker's value update live as you drag.
 
@@ -124,7 +131,7 @@ Open [http://localhost:5174](http://localhost:5174).
 npm test
 ```
 
-37 tests: the Balance Scale's solver (x on either side, fractions, negatives, every-x and no-x cases) and the Scientific Calculator's engine (log is base 10, ln, √, and degree-mode trig over a whole expression, e.g. sin(30+60) = 1).
+54 tests: Slope & Lines (reduced slopes, intercepts, tidy equations, challenge checking), the Balance Scale's solver (x on either side, fractions, negatives, every-x and no-x cases) and the Scientific Calculator's engine (log is base 10, ln, √, and degree-mode trig over a whole expression, e.g. sin(30+60) = 1).
 
 ### Build for production
 
