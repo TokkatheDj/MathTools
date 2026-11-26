@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
+import { decomposeNumber, readPlaceValueInput, placeValueTotal } from './number-math'
 
 const COLUMNS = [
   { name: 'Hundred\nThousands', place: 100000, color: '#7c3aed', bg: '#ede9fe' },
@@ -13,19 +14,18 @@ const COLUMNS = [
 export default function PlaceValue() {
   const [counts, setCounts] = useState<number[]>([0, 0, 0, 0, 0, 0])
   const [input, setInput] = useState('')
+  const [message, setMessage] = useState('')
 
+  // Read the number strictly and say why it can't be shown, instead of silently changing it
+  // (1500000 used to become 999999, 12.7 became 12, -5 became 0). number-math.ts, tested.
   const decompose = () => {
-    const n = Math.min(999999, Math.max(0, parseInt(input) || 0))
-    const newCounts = [0, 0, 0, 0, 0, 0]
-    let rem = n
-    COLUMNS.forEach((col, i) => {
-      newCounts[i] = Math.floor(rem / col.place)
-      rem = rem % col.place
-    })
-    setCounts(newCounts)
+    const r = readPlaceValueInput(input)
+    if ('error' in r) { setMessage(r.error); return }
+    setMessage('')
+    setCounts(decomposeNumber(r.value))
   }
 
-  const total = COLUMNS.reduce((sum, col, i) => sum + col.place * counts[i], 0)
+  const total = placeValueTotal(counts)
 
   const adjust = (i: number, delta: number) => {
     setCounts(c => {
@@ -78,8 +78,9 @@ export default function PlaceValue() {
             onKeyDown={e => e.key === 'Enter' && decompose()}
             className="border border-slate-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:placeholder-gray-500 rounded-xl px-4 py-2 text-sm w-60 focus:outline-none focus:ring-2 focus:ring-navy" />
           <button onClick={decompose} className="bg-navy text-white px-5 py-2 rounded-xl text-sm font-semibold hover:bg-navy-light transition-colors">Decompose</button>
-          <button onClick={() => { setCounts([0, 0, 0, 0, 0, 0]); setInput('') }} className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
+          <button onClick={() => { setCounts([0, 0, 0, 0, 0, 0]); setInput(''); setMessage('') }} className="bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-red-100 dark:hover:bg-red-900/50">Clear</button>
         </div>
+        {message && <p role="status" className="mt-2 text-sm text-red-700 dark:text-red-300">{message}</p>}
       </div>
     </div>
   )
