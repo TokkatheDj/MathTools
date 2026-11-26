@@ -1,69 +1,6 @@
 import { useState } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
-
-type Category = 'Length' | 'Weight' | 'Temperature' | 'Volume' | 'Speed' | 'Area'
-
-interface UnitDef {
-  label: string
-  toBase: (v: number) => number
-  fromBase: (v: number) => number
-}
-
-const UNITS: Record<Category, UnitDef[]> = {
-  Length: [
-    { label: 'mm',  toBase: v => v * 0.001,      fromBase: v => v / 0.001 },
-    { label: 'cm',  toBase: v => v * 0.01,        fromBase: v => v / 0.01 },
-    { label: 'm',   toBase: v => v,               fromBase: v => v },
-    { label: 'km',  toBase: v => v * 1000,        fromBase: v => v / 1000 },
-    { label: 'in',  toBase: v => v * 0.0254,      fromBase: v => v / 0.0254 },
-    { label: 'ft',  toBase: v => v * 0.3048,      fromBase: v => v / 0.3048 },
-    { label: 'yd',  toBase: v => v * 0.9144,      fromBase: v => v / 0.9144 },
-    { label: 'mi',  toBase: v => v * 1609.344,    fromBase: v => v / 1609.344 },
-  ],
-  Weight: [
-    { label: 'mg',  toBase: v => v * 0.001,       fromBase: v => v / 0.001 },
-    { label: 'g',   toBase: v => v,               fromBase: v => v },
-    { label: 'kg',  toBase: v => v * 1000,        fromBase: v => v / 1000 },
-    { label: 't',   toBase: v => v * 1e6,         fromBase: v => v / 1e6 },
-    { label: 'oz',  toBase: v => v * 28.3495,     fromBase: v => v / 28.3495 },
-    { label: 'lb',  toBase: v => v * 453.592,     fromBase: v => v / 453.592 },
-    { label: 'st',  toBase: v => v * 6350.29,     fromBase: v => v / 6350.29 },
-  ],
-  Temperature: [
-    { label: '°C', toBase: v => v,                fromBase: v => v },
-    { label: '°F', toBase: v => (v - 32) * 5/9,  fromBase: v => v * 9/5 + 32 },
-    { label: 'K',  toBase: v => v - 273.15,       fromBase: v => v + 273.15 },
-  ],
-  Volume: [
-    { label: 'ml',    toBase: v => v * 0.001,      fromBase: v => v / 0.001 },
-    { label: 'L',     toBase: v => v,              fromBase: v => v },
-    { label: 'm³',    toBase: v => v * 1000,       fromBase: v => v / 1000 },
-    { label: 'tsp',   toBase: v => v * 0.00492892, fromBase: v => v / 0.00492892 },
-    { label: 'tbsp',  toBase: v => v * 0.0147868,  fromBase: v => v / 0.0147868 },
-    { label: 'fl oz', toBase: v => v * 0.0295735,  fromBase: v => v / 0.0295735 },
-    { label: 'cup',   toBase: v => v * 0.236588,   fromBase: v => v / 0.236588 },
-    { label: 'pt',    toBase: v => v * 0.473176,   fromBase: v => v / 0.473176 },
-    { label: 'qt',    toBase: v => v * 0.946353,   fromBase: v => v / 0.946353 },
-    { label: 'gal',   toBase: v => v * 3.78541,    fromBase: v => v / 3.78541 },
-  ],
-  Speed: [
-    { label: 'm/s',   toBase: v => v,              fromBase: v => v },
-    { label: 'km/h',  toBase: v => v / 3.6,        fromBase: v => v * 3.6 },
-    { label: 'mph',   toBase: v => v * 0.44704,    fromBase: v => v / 0.44704 },
-    { label: 'knots', toBase: v => v * 0.514444,   fromBase: v => v / 0.514444 },
-    { label: 'ft/s',  toBase: v => v * 0.3048,     fromBase: v => v / 0.3048 },
-  ],
-  Area: [
-    { label: 'mm²', toBase: v => v * 1e-6,         fromBase: v => v / 1e-6 },
-    { label: 'cm²', toBase: v => v * 1e-4,         fromBase: v => v / 1e-4 },
-    { label: 'm²',  toBase: v => v,                fromBase: v => v },
-    { label: 'km²', toBase: v => v * 1e6,          fromBase: v => v / 1e6 },
-    { label: 'in²', toBase: v => v * 0.00064516,   fromBase: v => v / 0.00064516 },
-    { label: 'ft²', toBase: v => v * 0.092903,     fromBase: v => v / 0.092903 },
-    { label: 'ac',  toBase: v => v * 4046.86,      fromBase: v => v / 4046.86 },
-    { label: 'ha',  toBase: v => v * 10000,        fromBase: v => v / 10000 },
-  ],
-}
+import { UNITS, fmt, readNumber, type Category } from './unit-math'  // exact factors, tested
 
 const CATEGORIES: Category[] = ['Length', 'Weight', 'Temperature', 'Volume', 'Speed', 'Area']
 
@@ -74,16 +11,6 @@ const CATEGORY_COLORS: Record<Category, { text: string; bg: string; tab: string 
   Volume:      { text: 'text-blue-700',   bg: 'bg-blue-600',   tab: 'bg-blue-600 text-white' },
   Speed:       { text: 'text-pink-700',   bg: 'bg-pink-700',   tab: 'bg-pink-700 text-white' },
   Area:        { text: 'text-green-700',  bg: 'bg-green-700',  tab: 'bg-green-700 text-white' },
-}
-
-function fmt(n: number): string {
-  if (!isFinite(n)) return '—'
-  if (Math.abs(n) === 0) return '0'
-  if (Math.abs(n) >= 1e9 || (Math.abs(n) < 1e-4 && n !== 0)) {
-    return n.toExponential(6).replace(/\.?0+e/, 'e')
-  }
-  const s = parseFloat(n.toPrecision(10)).toString()
-  return s
 }
 
 export default function UnitConverter() {
@@ -97,8 +24,8 @@ export default function UnitConverter() {
   const units = UNITS[category]
 
   const convert = (val: string, srcIdx: number, dstIdx: number): string => {
-    const n = parseFloat(val)
-    if (isNaN(n) || val === '') return ''
+    const n = readNumber(val)
+    if (isNaN(n)) return ''
     const base = units[srcIdx].toBase(n)
     return fmt(units[dstIdx].fromBase(base))
   }
