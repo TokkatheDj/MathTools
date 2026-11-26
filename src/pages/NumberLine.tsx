@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
+import { zoomRange, clampToRange, labelEvery } from './number-math'
 
 interface Marker { id: number; value: number; color: string }
 
@@ -25,7 +26,7 @@ export default function NumberLine() {
   }
 
   const ticks = Array.from({ length: max - min + 1 }, (_, i) => min + i)
-  const labelEvery = Math.ceil((max - min) / 20)
+  const labelStep = labelEvery(min, max)
 
   const onPointerDown = (id: number) => (e: React.PointerEvent) => {
     e.currentTarget.setPointerCapture(e.pointerId)
@@ -48,11 +49,11 @@ export default function NumberLine() {
     setNextId(n => n + 1)
   }
 
+  // Zoom, then keep every marker on the visible line (number-math.ts, tested)
   const zoom = (dir: 'in' | 'out') => {
-    const center = Math.round((min + max) / 2)
-    const half = Math.round((max - min) / 2)
-    if (dir === 'in' && half > 2) { setMin(center - Math.max(2, half - 2)); setMax(center + Math.max(2, half - 2)) }
-    if (dir === 'out' && half < 50) { setMin(center - (half + 2)); setMax(center + (half + 2)) }
+    const r = zoomRange(min, max, dir)
+    setMin(r.min); setMax(r.max)
+    setMarkers(ms => ms.map(m => ({ ...m, value: clampToRange(m.value, r.min, r.max) })))
   }
 
   return (
@@ -74,7 +75,7 @@ export default function NumberLine() {
               return (
                 <g key={v}>
                   <line x1={x} y1={lineY - (major ? 10 : 6)} x2={x} y2={lineY + (major ? 10 : 6)} stroke="#475569" className="dark:stroke-slate-400" strokeWidth={major ? 2 : 1} />
-                  {v % labelEvery === 0 && (
+                  {v % labelStep === 0 && (
                     <text x={x} y={lineY + 26} textAnchor="middle" fontSize="12" fill="#475569" className="dark:fill-slate-300" fontFamily="system-ui">{v}</text>
                   )}
                 </g>
