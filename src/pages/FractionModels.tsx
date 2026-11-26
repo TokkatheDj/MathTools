@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
+import { compareFractions } from './unit-math'
 
 function FractionCircle({ numerator, denominator, color }: { numerator: number; denominator: number; color: string }) {
   const cx = 80, cy = 80, r = 70
@@ -72,7 +73,7 @@ export default function FractionModels() {
   const color1 = '#f59e0b'
   const color2 = '#3b82f6'
 
-  const cmp = compare ? (num * den2 > num2 * den ? '>' : num * den2 < num2 * den ? '<' : '=') : ''
+  const cmp = compare ? compareFractions(num, den, num2, den2) : ''
 
   return (
     <div className="flex flex-col h-screen bg-amber-50 dark:bg-gray-900">
