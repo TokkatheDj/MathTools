@@ -2,12 +2,9 @@ import { useState, useCallback } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
 import { DndContext, useDraggable, useDroppable, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import type { DragEndEvent } from '@dnd-kit/core'
+import { buildExpr, removeZeroPairs as removePairs, type TileType, type TileSign, type Zone, type PlacedTile } from './tiles-probability-math'
 
-type TileType = 'unit' | 'x' | 'x2'
-type TileSign = 1 | -1
-type Zone = 'left' | 'right'
 
-interface PlacedTile { id: string; type: TileType; sign: TileSign; zone: Zone }
 
 const TILE_CONFIG = {
   unit: { w: 32, h: 32, label: '1', posColor: '#fbbf24', negColor: '#dc2626', posInk: '#1f2937' },
@@ -67,30 +64,6 @@ function Trash() {
   )
 }
 
-function buildExpr(tiles: PlacedTile[], zone: Zone): string {
-  const t = tiles.filter(t => t.zone === zone)
-  const x2p = t.filter(t => t.type === 'x2' && t.sign === 1).length
-  const x2n = t.filter(t => t.type === 'x2' && t.sign === -1).length
-  const xp  = t.filter(t => t.type === 'x'  && t.sign === 1).length
-  const xn  = t.filter(t => t.type === 'x'  && t.sign === -1).length
-  const up  = t.filter(t => t.type === 'unit' && t.sign === 1).length
-  const un  = t.filter(t => t.type === 'unit' && t.sign === -1).length
-  const net = { x2: x2p - x2n, x: xp - xn, u: up - un }
-  const parts: string[] = []
-  if (net.x2 !== 0) parts.push(`${Math.abs(net.x2) !== 1 ? Math.abs(net.x2) : ''}x²`)
-  if (net.x  !== 0) parts.push(`${Math.abs(net.x)  !== 1 ? Math.abs(net.x)  : ''}x`)
-  if (net.u  !== 0) parts.push(`${Math.abs(net.u)}`)
-  if (parts.length === 0) return '0'
-  let expr = ''
-  const signs = [net.x2, net.x, net.u].filter(v => v !== 0)
-  parts.forEach((p, i) => {
-    const s = signs[i]
-    if (i === 0) expr += s < 0 ? '−' + p : p
-    else expr += s < 0 ? ' − ' + p : ' + ' + p
-  })
-  return expr
-}
-
 export default function AlgebraTiles() {
   const [tiles, setTiles] = useState<PlacedTile[]>([])
   const [nextId, setNextId] = useState(1)
@@ -119,22 +92,7 @@ export default function AlgebraTiles() {
     }
   }, [nextId])
 
-  const removeZeroPairs = () => {
-    setTiles(prev => {
-      let next = [...prev]
-      for (const type of ['unit', 'x', 'x2'] as TileType[]) {
-        for (const zone of ['left', 'right'] as Zone[]) {
-          const pos = next.filter(t => t.zone === zone && t.type === type && t.sign === 1)
-          const neg = next.filter(t => t.zone === zone && t.type === type && t.sign === -1)
-          const removePairs = Math.min(pos.length, neg.length)
-          const posToRemove = pos.slice(0, removePairs).map(t => t.id)
-          const negToRemove = neg.slice(0, removePairs).map(t => t.id)
-          next = next.filter(t => !posToRemove.includes(t.id) && !negToRemove.includes(t.id))
-        }
-      }
-      return next
-    })
-  }
+  const removeZeroPairs = () => setTiles(prev => removePairs(prev))  // tiles-probability-math.ts, tested
 
   const leftExpr = buildExpr(tiles, 'left')
   const rightExpr = buildExpr(tiles, 'right')

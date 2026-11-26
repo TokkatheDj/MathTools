@@ -1,8 +1,8 @@
 import { useState, useRef } from 'react'
 import ToolHeader from '../components/common/ToolHeader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts'
+import { spinnerSectorIndex, startFace, tally, type Mode } from './tiles-probability-math'
 
-type Mode = 'coin' | 'dice' | 'spinner'
 
 const COIN_COLORS = { H: '#b45309', T: '#64748b' } // bronze-gold heads: white H stays readable
 const DICE_DOTS: Record<number, [number, number][]> = {
@@ -24,11 +24,16 @@ export default function ProbabilityTools() {
   const [spinAngle, setSpinAngle] = useState(0)
   const [sectors] = useState(['A', 'B', 'C', 'D'])
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // Bumped on every mode switch: a flip, roll or spin still animating from the old mode must not
+  // drop its result into the new mode's tally (it did before Nov 2026).
+  const session = useRef(0)
 
   const flipCoin = () => {
     if (animating) return
     setAnimating(true)
+    const mine = session.current
     setTimeout(() => {
+      if (session.current !== mine) return
       const r = Math.random() < 0.5 ? 'H' : 'T'
       setDisplay(r)
       setResults(prev => [...prev, r])
@@ -46,8 +51,10 @@ export default function ProbabilityTools() {
   const rollDice = () => {
     if (animating) return
     setAnimating(true)
+    const mine = session.current
     let count = 0
     intervalRef.current = setInterval(() => {
+      if (session.current !== mine) { clearInterval(intervalRef.current ?? undefined); return }
       const v = String(Math.floor(Math.random() * 6) + 1)
       setDisplay(v)
       count++
@@ -71,26 +78,30 @@ export default function ProbabilityTools() {
     if (spinning) return
     setSpinning(true)
     const spins = 4 + Math.random() * 4
-    const sectorAngle = 360 / sectors.length
     const offset = Math.random() * 360
     const target = spinAngle + spins * 360 + offset
     setSpinAngle(target)
+    const mine = session.current
     setTimeout(() => {
-      const normalised = ((target % 360) + 360) % 360
-      const idx = Math.floor(((360 - normalised) % 360) / sectorAngle)
-      const r = sectors[idx % sectors.length]
+      if (session.current !== mine) return
+      const r = sectors[spinnerSectorIndex(target, sectors.length)]  // tested
       setDisplay(r)
       setResults(prev => [...prev, r])
       setSpinning(false)
     }, 1600)
   }
 
-  const clearResults = () => { setResults([]); setDisplay(mode === 'coin' ? 'H' : mode === 'dice' ? '1' : 'A') }
+  const clearResults = (m: Mode = mode) => { setResults([]); setDisplay(startFace(m)) }
+  // Switching mode: start the NEW mode's face (it used the old mode's, so Dice showed "Rolled: H")
+  // and stop anything still animating from the old mode.
+  const switchMode = (m: Mode) => {
+    session.current++
+    if (intervalRef.current) clearInterval(intervalRef.current)
+    setAnimating(false); setSpinning(false)
+    setMode(m); clearResults(m)
+  }
 
-  const freq = results.reduce<Record<string, number>>((acc, r) => { acc[r] = (acc[r] || 0) + 1; return acc }, {})
-  const chartData = Object.entries(freq).sort(([a], [b]) => a.localeCompare(b)).map(([name, count]) => ({
-    name, count, pct: Math.round(count / results.length * 100)
-  }))
+  const chartData = tally(results)
 
   return (
     <div className="flex flex-col h-screen bg-pink-50 dark:bg-gray-900">
@@ -99,7 +110,7 @@ export default function ProbabilityTools() {
         {/* Mode selector */}
         <div className="flex gap-2 justify-center">
           {(['coin', 'dice', 'spinner'] as Mode[]).map(m => (
-            <button key={m} onClick={() => { setMode(m); clearResults() }}
+            <button key={m} onClick={() => switchMode(m)}
               className={`px-5 py-2 rounded-xl text-sm font-semibold capitalize transition-colors ${mode === m ? 'bg-navy text-white shadow' : 'bg-white dark:bg-gray-700 text-slate-600 dark:text-gray-300 hover:bg-slate-50 dark:hover:bg-gray-600 shadow-sm'}`}>
               {m === 'coin' ? '🪙 Coin' : m === 'dice' ? '🎲 Dice' : '🎡 Spinner'}
             </button>
@@ -164,7 +175,7 @@ export default function ProbabilityTools() {
               </>
             )}
             <div className="text-slate-500 dark:text-gray-400 text-xs">Total trials: {results.length}</div>
-            <button onClick={clearResults} className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-xs underline">Clear Results</button>
+            <button onClick={() => clearResults()} className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-xs underline">Clear Results</button>
           </div>
 
           {/* Chart */}
